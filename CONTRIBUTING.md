@@ -75,6 +75,14 @@ Ideally you should write your tests before your write you code, but that's not a
 
 ### Code style
 
+#### C++
+
+We use the Google style guide. That is the default for the `cpplint` linter, which we also use as a pre-commit hook. You really should install it as a pre-commit hook so that there aren't lots of linter battles down the road. Steps below:
+
+  1. Use `pip` to install the `[dev]` dependencies for this package: `python3 -m pip install .[dev]`. Note that you may need to escape the `.[dev]` part depending on your shell.
+  1. Run `pre-commit install` to install those pre-commit hooks defined in ./.pre-commit-config.yaml
+  1. Profit!
+
 We will strictly follow the PEP8 guidelines and
 
   - 4 spaces instead of tabs

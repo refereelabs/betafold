@@ -1,3 +1,5 @@
 .eggs
 build
 cmake-build-debug
+betafold.egg-info
+*.so
