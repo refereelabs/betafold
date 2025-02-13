@@ -16,7 +16,7 @@ class CustomCleanCommand(CleanCommand):
     def run(self):
         CleanCommand.run(self)
 
-        clean_dirs = ['.eggs', 'build', 'dist', '__pycache__', 'cbetafold.egg-info', 'betafold.egg-info',
+        clean_dirs = ['.eggs', 'build', 'dist', '__pycache__', 'betafold.egg-info', 'betafold.egg-info',
                       'cmake-build-betafold']
         clean_files = ['.pyi', '.so', '.pyd', '.log', ".pyc", ".pyo", ".o"]
 
@@ -145,14 +145,14 @@ class CustomTestCommand(TestCommand):
 
 resp = setup(
     name="betafold",
-    version="1.5.11",
-    author="Canold, LLC",
-    author_email="andrew@canold.com",
-    description="Turns configuration files into ETLs.",
+    version="0.0.1",
+    author="Andrew Kelleher, Romain Berton, John Nielson",
+    author_email="andrew@refereelabs.com",
+    description="A physics engine written under the transformer machine learning architecture",
     long_description_content_type="text/markdown",
-    url="https://github.com/CANOLDLLC/betafold",
+    url="https://github.com/refereelabs/betafold",
     cmdclass={"build_ext": CMakeBuild, "clean": CustomCleanCommand, "test": CustomTestCommand},
-    extras_require={"test": ["coverage", "pytest", "pytest-cov"]},
+    extras_require={"test": ["coverage", "pytest", "pytest-cov", "sphinx==6.1.3"]},
     packages=find_packages(),
     package_dir={"tests": "tests"},
     entry_points={
@@ -164,7 +164,7 @@ resp = setup(
                     "mypy",
                     "cmake",
                     "pybind11"],
-    ext_modules=[CMakeExtension("betafold.cbetafold", sourcedir=".")],
+    ext_modules=[CMakeExtension("betafold", sourcedir=".")],
     zip_safe=False,
     install_requires=[
     ],
