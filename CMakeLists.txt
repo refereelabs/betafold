@@ -62,7 +62,7 @@ add_link_options(
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
-find_package(Python 3.8 COMPONENTS Interpreter Development REQUIRED)
+find_package(Python 3.10 COMPONENTS Interpreter Development REQUIRED)
 find_package(pybind11 2.9.1 REQUIRED)
 
 pybind11_add_module(betafold ${SOURCES})

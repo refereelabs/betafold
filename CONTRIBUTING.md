@@ -75,7 +75,27 @@ Ideally you should write your tests before your write you code, but that's not a
 
 ### Code style
 
+We use `pre-commit` hooks to install our linters as a pre-commit hook. This ensures your code is linted before it can be
+committed. This is a requirement for all contributors.
+
+When you attempt to commit and see that it fails, run `git diff` to see what changes were made/linted. If those changes
+look OK to you you can just commit from there running `git add . && git commit -a`.
+
 #### C++
+
+##### Dependencies
+
+Note that we use the C++23 standard. That's not available by default on all machines. C++23 requires a minimum of `g++` 11.1.0 if you're operating on linux. If you have information about `clang` please share.
+
+In order to install support for the C++23 standard on your machine, you can use the following commands:
+
+```bash
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install g++-13
+```
+
+##### Style
 
 We use the Google style guide. That is the default for the `cpplint` linter, which we also use as a pre-commit hook. You really should install it as a pre-commit hook so that there aren't lots of linter battles down the road. Steps below:
 
