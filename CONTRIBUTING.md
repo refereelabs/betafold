@@ -8,7 +8,7 @@
       - "Issue Type" ("Bug", "Feature", or "Enhancement"), and
       - "Lifecycle Status" ("Needs Triage", "Assigned", "Closed").
   1. Start by labeling the issue as "Proposal" and either "Bug", "Feature", or "Enhancement"
-  1. During the biweekly grooming session the issue will be either labeled "Accepted" or left as a "Proposal" or "Closed".
+  1. During the biweekly grooming session the issue will be either labeled "Approved" or left as a "Proposal" or "Closed".
   1. Every issue that is in the "Assigned" stage must have an associated pull request as soon as work is started.
   1. Every issue without an associated Pull Request is a candidate to be pruned.
   1. Lifecycle is tracked by the associated pull request after work is begun.
