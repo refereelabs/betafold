@@ -1,5 +1,4 @@
 import subprocess
-import operator
 import os, re, sys
 import os.path
 from setuptools import setup, find_packages, Extension
@@ -16,7 +15,7 @@ class CustomCleanCommand(CleanCommand):
     def run(self):
         CleanCommand.run(self)
 
-        clean_dirs = ['.eggs', 'build', 'dist', '__pycache__', 'betafold.egg-info', 'betafold.egg-info',
+        clean_dirs = ['.eggs', 'build', 'dist', '__pycache__', 'betafold.egg-info',
                       'cmake-build-betafold']
         clean_files = ['.pyi', '.so', '.pyd', '.log', ".pyc", ".pyo", ".o"]
 
@@ -42,7 +41,8 @@ class CMakeExtension(Extension):
 
 class CMakeBuild(build_ext):
     user_options = build_ext.user_options + [
-        ("cmake-build-type=", "b", "Build type to pass to CMake. Options are Release for a highly optimized release build, or Debug for a debug build with C++ level logging and assertions."),
+        ("cmake-build-type=", "b",
+         "Build type to pass to CMake. Options are Release for a highly optimized release build, or Debug for a debug build with C++ level logging and assertions."),
     ]
 
     def initialize_options(self):
@@ -107,21 +107,6 @@ class CustomTestCommand(TestCommand):
         self.cmake_build_type = "Debug"
         self.addopts = []
 
-    # def run(self):
-    #     installed_dists = self.install_dists(self.distribution)
-    #
-    #     cmd = ' '.join(self._argv)
-    #     if self.dry_run:
-    #         self.announce('skipping "%s" (dry run)' % cmd)
-    #         return
-    #
-    #     self.announce('running "%s"' % cmd)
-    #
-    #     paths = map(operator.attrgetter('location'), installed_dists)
-    #     with self.paths_on_pythonpath(paths):
-    #         with self.project_on_sys_path():
-    #             self.run_tests()
-
     def finalize_options(self):
         TestCommand.finalize_options(self)
 
@@ -148,24 +133,22 @@ resp = setup(
     version="0.0.1",
     author="Andrew Kelleher, Romain Berton, John Nielson",
     author_email="andrew@refereelabs.com",
-    description="A physics engine written under the transformer machine learning architecture",
+    description="Simulates energy using the tranformer AI architecture",
     long_description_content_type="text/markdown",
     url="https://github.com/refereelabs/betafold",
     cmdclass={"build_ext": CMakeBuild, "clean": CustomCleanCommand, "test": CustomTestCommand},
-    extras_require={"test": ["coverage", "pytest", "pytest-cov", "sphinx==6.1.3"]},
+    extras_require={
+        "dev": ["mypy==1.15.0", "pytest==8.3.4", "pytest-cov==6.0.0", "coverage==7.6.12", "pre-commit==4.1.0",
+                "clang-format==19.1.7"]},
     packages=find_packages(),
     package_dir={"tests": "tests"},
-    entry_points={
-        "console_scripts": [
-            "betafold = betafold.__main__:main",
-        ],
-    },
-    setup_requires=["pytest-runner",
-                    "mypy",
-                    "cmake",
-                    "pybind11"],
+    entry_points={},
+    setup_requires=[
+        "mypy==1.15.0",
+        "cmake==3.31.4",
+        "pybind11==2.13.6"
+    ],
     ext_modules=[CMakeExtension("betafold", sourcedir=".")],
     zip_safe=False,
-    install_requires=[
-    ],
+    python_requires=">=3.10",
 )
