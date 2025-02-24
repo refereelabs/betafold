@@ -97,7 +97,8 @@ sudo apt-get install g++-13
 
 ##### Style
 
-We use the Google style guide. That is the default for the `cpplint` linter, which we also use as a pre-commit hook. You really should install it as a pre-commit hook so that there aren't lots of linter battles down the road. Steps below:
+We use the Google style guide. You really should install it as a pre-commit hook so that there aren't lots of linter 
+battles down the road. Steps below:
 
   1. Use `pip` to install the `[dev]` dependencies for this package: `python3 -m pip install .[dev]`. Note that you may need to escape the `.[dev]` part depending on your shell.
   1. Run `pre-commit install` to install those pre-commit hooks defined in ./.pre-commit-config.yaml

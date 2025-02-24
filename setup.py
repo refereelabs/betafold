@@ -139,7 +139,7 @@ resp = setup(
     cmdclass={"build_ext": CMakeBuild, "clean": CustomCleanCommand, "test": CustomTestCommand},
     extras_require={
         "dev": ["mypy==1.15.0", "pytest==8.3.4", "pytest-cov==6.0.0", "coverage==7.6.12", "pre-commit==4.1.0",
-                "cpplint==2.0.0"]},
+                "clang-format==19.1.7"]},
     packages=find_packages(),
     package_dir={"tests": "tests"},
     entry_points={},
