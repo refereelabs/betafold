@@ -3,4 +3,4 @@ repos:
     rev: v0.6.0
     hooks:
       - id: clang-format
-        args: ["--style", "Google"]
+        args: ["--style", "Google", "src/**"]
