@@ -1,5 +1,7 @@
 import subprocess
-import os, re, sys
+import os
+import re
+import sys
 import os.path
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
@@ -15,8 +17,13 @@ class CustomCleanCommand(CleanCommand):
     def run(self):
         CleanCommand.run(self)
 
-        clean_dirs = ['.eggs', 'build', 'dist', '__pycache__', 'betafold.egg-info',
-                      'cmake-build-betafold']
+        clean_dirs = [
+            '.eggs',
+            'build',
+            'dist',
+            '__pycache__',
+            'betafold.egg-info',
+            'cmake-build-betafold']
         clean_files = ['.pyi', '.so', '.pyd', '.log', ".pyc", ".pyo", ".o"]
 
         for directory in clean_dirs:
@@ -41,7 +48,8 @@ class CMakeExtension(Extension):
 
 class CMakeBuild(build_ext):
     user_options = build_ext.user_options + [
-        ("cmake-build-type=", "b",
+        ("cmake-build-type=",
+         "b",
          "Build type to pass to CMake. Options are Release for a highly optimized release build, or Debug for a debug build with C++ level logging and assertions."),
     ]
 
@@ -65,7 +73,10 @@ class CMakeBuild(build_ext):
             self.build_extension(ext)
 
     def build_extension(self, ext):
-        extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
+        extdir = os.path.abspath(
+            os.path.dirname(
+                self.get_ext_fullpath(
+                    ext.name)))
         if not os.path.exists(extdir):
             os.makedirs(extdir)
 
@@ -74,7 +85,7 @@ class CMakeBuild(build_ext):
             "-DCMAKE_BUILD_TYPE=" + self.cmake_build_type,
             "-DCMAKE_VERBOSE_MAKEFILE=ON",
             "-DPython_EXECUTABLE=" + sys.executable,
-            ]
+        ]
 
         if not os.path.exists(self.build_lib):
             os.makedirs(self.build_lib)
@@ -93,7 +104,8 @@ class CMakeBuild(build_ext):
         except Exception as e:
             # I think depending on whether or not this is editable the build directory is different, so the built
             # extension lives at another path than self.build_lib, which is why this fails. It also happens that when it
-            # fails; the extension is already copied to the source directory, so we can just pass here.
+            # fails; the extension is already copied to the source directory,
+            # so we can just pass here.
             pass
 
 
@@ -127,7 +139,6 @@ class CustomTestCommand(TestCommand):
         sys.exit(errno)
 
 
-
 resp = setup(
     name="betafold",
     version="0.0.1",
@@ -136,19 +147,32 @@ resp = setup(
     description="Simulates energy using the tranformer AI architecture",
     long_description_content_type="text/markdown",
     url="https://github.com/refereelabs/betafold",
-    cmdclass={"build_ext": CMakeBuild, "clean": CustomCleanCommand, "test": CustomTestCommand},
+    cmdclass={
+        "build_ext": CMakeBuild,
+        "clean": CustomCleanCommand,
+        "test": CustomTestCommand},
     extras_require={
-        "dev": ["mypy==1.15.0", "pytest==8.3.4", "pytest-cov==6.0.0", "coverage==7.6.12", "pre-commit==4.1.0",
-                "clang-format==19.1.7"]},
+        "dev": [
+            "mypy==1.15.0",
+            "pytest==8.3.4",
+            "pytest-cov==6.0.0",
+            "coverage==7.6.12",
+            "pre-commit==4.1.0",
+            "clang-format==19.1.7",
+            "pycodestyle==2.12.1",
+            "autopep8==2.3.2"]},
     packages=find_packages(),
-    package_dir={"tests": "tests"},
+    package_dir={
+        "tests": "tests"},
     entry_points={},
     setup_requires=[
         "mypy==1.15.0",
         "cmake==3.31.4",
-        "pybind11==2.13.6"
-    ],
-    ext_modules=[CMakeExtension("betafold", sourcedir=".")],
+        "pybind11==2.13.6"],
+    ext_modules=[
+        CMakeExtension(
+            "betafold",
+            sourcedir=".")],
     zip_safe=False,
     python_requires=">=3.10",
 )
