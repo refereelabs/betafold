@@ -1,0 +1,10 @@
+repos:
+  - repo: https://github.com/cpp-linter/cpp-linter-hooks
+    rev: v0.6.0
+    hooks:
+      - id: clang-format
+        args: ["--style", "Google", "src/**"]
+  - repo: https://github.com/hhatto/autopep8
+    rev: v2.3.2
+    hooks:
+      - id: autopep8
