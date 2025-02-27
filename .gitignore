@@ -3,3 +3,5 @@ build
 cmake-build-debug
 betafold.egg-info
 *.so
+*.pyi
+*.pyc

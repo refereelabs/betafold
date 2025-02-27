@@ -8,7 +8,7 @@ get_filename_component(PROJECT_ROOT "${CMAKE_SOURCE_DIR}" ABSOLUTE)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CBETAFOLD_PYTHON_MODULE "betafold")
-set(SOURCES_ROOT "${PROJECT_ROOT}/src")
+set(SOURCES_ROOT "${PROJECT_ROOT}/cbetafold/src")
 
 message(STATUS "Project root               : ${PROJECT_ROOT}")
 message(STATUS "Sources root               : ${SOURCES_ROOT}")
@@ -60,16 +60,13 @@ add_link_options(
         -Wuninitialized
 )
 
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "cbetafold/src/*.cpp")
 
 find_package(Python 3.10 COMPONENTS Interpreter Development REQUIRED)
 find_package(pybind11 2.9.1 REQUIRED)
 
 pybind11_add_module(betafold ${SOURCES})
 
-target_compile_definitions(
-        betafold PRIVATE SOURCES_ROOT="${SOURCES_ROOT}"
-)
 
 add_definitions(-DPROJECT_SOURCE_DIR="${PROJECT_ROOT}")
 add_definitions(-DSOURCES_ROOT="${SOURCES_ROOT}")
@@ -93,27 +90,41 @@ else ()
 endif ()
 
 
+target_compile_definitions(
+        betafold PRIVATE SOURCES_ROOT="${SOURCES_ROOT}"
+)
 target_include_directories(betafold
         PRIVATE ${Python_INCLUDE_DIRS}
         ${pybind11_INCLUDE_DIRS}
-        src)
-
+        cbetafold/include
+        cbetafold
+)
 set_target_properties(betafold PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
 )
-
 target_link_libraries(betafold PRIVATE pybind11::module Python::Python)
+
+add_executable(train cbetafold/main.cpp)
+target_compile_definitions(
+        train PRIVATE SOURCES_ROOT="${SOURCES_ROOT}"
+)
+target_include_directories(train
+        PRIVATE ${Python_INCLUDE_DIRS}
+        ${pybind11_INCLUDE_DIRS}
+        cbetafold/include
+        cbetafold)
+set_target_properties(train PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+)
+target_link_libraries(train PRIVATE pybind11::module Python::Python)
 
 add_custom_command(
         OUTPUT "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${PROJECT_NAME}.pyi"
-        COMMAND stubgen -o "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/.." -m ${CBETAFOLD_PYTHON_MODULE}
+        COMMAND cd ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} && stubgen -o "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/" -m ${CBETAFOLD_PYTHON_MODULE}
         DEPENDS betafold
         COMMENT "Generating stub file in $<TARGET_PROPERTY:betafold,CMAKE_LIBRARY_OUTPUT_DIRECTORY> for ${CBETAFOLD_PYTHON_MODULE}"
 )
-
 add_custom_target(
         generate_stubs ALL
         DEPENDS "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${PROJECT_NAME}.pyi"
 )
-
-add_executable(test src/main.cpp)
