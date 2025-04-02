@@ -10,7 +10,7 @@ $$
 P \subseteq \mathbb R^3
 $$
 $$
-\vec p \in P
+p \in P
 $$
 $$
 \|p_x\|, \|p_y\|, \|p_z\| < a
@@ -36,13 +36,13 @@ $$\hat H = \frac {1}{2}m\vec v^2$$
 A particle's initial state is captured in the input vector $$I$$ which is defined as
 
 $$
-I = (\vec p, \hat H),
+I = (p, \hat H),
 $$
 
 where
 
 $$
-\vec p \in P
+p \in P
 $$
 $$
 \hat H = \frac {1}{2}m\vec v_p^2
